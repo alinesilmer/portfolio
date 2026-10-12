@@ -7,7 +7,7 @@ import hz1312 from '@/assets/projects/1312hz.webp';
 import akali from '@/assets/projects/akali.webp';
 import avalon from '@/assets/projects/avalon-v2.webp';
 import lavalle from '@/assets/projects/lavalle.webp';
-import look from '@/assets/projects/look.webp';
+// import look from '@/assets/projects/look.webp';
 import medisystem from '@/assets/projects/medisystem.webp';
 // import zion from '@/assets/projects/zion.webp';
 
@@ -41,12 +41,12 @@ export const projects: Project[] = [
     image: hobbyst,
     description: 'Buscador de personas, profes, lugares y planes creativos en Corrientes.',
   },
-  {
-    name: 'Look',
-    url: 'https://pickapp-delta.vercel.app/',
-    image: look,
-    description: 'Subís una imagen y encontrás productos parecidos a lo que ves.',
-  },
+  // {
+  //   name: 'Look',
+  //   url: 'https://pickapp-delta.vercel.app/',
+  //   image: look,
+  //   description: 'Subís una imagen y encontrás productos parecidos a lo que ves.',
+  // },
   {
     name: 'MediSystem',
     url: 'https://system-doctors.vercel.app/',
