@@ -1,0 +1,108 @@
+---
+import { Image } from 'astro:assets';
+
+import fall1 from '@/assets/persona/caida-1.webp';
+import fall2 from '@/assets/persona/caida-2.webp';
+import fall3 from '@/assets/persona/caida-3.webp';
+import fall4 from '@/assets/persona/caida-4.webp';
+import landing from '@/assets/persona/llegada.webp';
+import { chapters } from '@/data/chapters';
+
+/** Order matters: a chapter's `persona.frame` is an index into this list. */
+const drawings = [fall1, fall2, fall3, fall4, landing];
+const start = chapters[0].persona;
+---
+
+<!-- Decorative: she illustrates the scroll, the content never depends on her. -->
+<div
+  class="persona"
+  data-persona-root
+  aria-hidden="true"
+  style={`--x:${start.x}vw;--y:${start.y}vh;--scale:${start.scale}`}
+>
+  <div class="tilt" data-persona-tilt>
+    <div class="float">
+      {
+        drawings.map((drawing, index) => (
+          <Image
+            src={drawing}
+            alt=""
+            widths={[320, 640]}
+            sizes="43vh"
+            loading="eager"
+            fetchpriority={index === 0 ? 'high' : 'low'}
+            decoding="async"
+          />
+        ))
+      }
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Five drawings stacked in one 2:3 box; the controller crossfades them. */
+  .persona {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: var(--z-persona);
+    width: 42.67vh;
+    height: 64vh;
+    pointer-events: none;
+    /* Resting place until the script takes over. */
+    transform: translate(var(--x), var(--y)) translate(-50%, -50%) scale(var(--scale));
+    will-change: transform;
+  }
+
+  .tilt,
+  .float {
+    position: absolute;
+    inset: 0;
+  }
+
+  .tilt {
+    will-change: transform;
+  }
+
+  .float {
+    animation: float 5s ease-in-out infinite;
+  }
+
+  .persona:global(.is-landed) .float {
+    animation: sway 2.6s ease-in-out infinite;
+    transform-origin: 50% 97%;
+  }
+
+  .float :global(img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    opacity: 0;
+  }
+
+  .float :global(img:first-child) {
+    opacity: 1;
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(-1.5%) rotate(-1.2deg);
+    }
+    50% {
+      transform: translateY(1.5%) rotate(1.2deg);
+    }
+  }
+
+  @keyframes sway {
+    0%,
+    100% {
+      transform: rotate(-1.4deg);
+    }
+    50% {
+      transform: rotate(1.4deg);
+    }
+  }
+</style>

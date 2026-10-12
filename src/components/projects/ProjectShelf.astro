@@ -1,0 +1,54 @@
+---
+import type { Project } from '@/data/projects';
+import ProjectFile from './ProjectFile.astro';
+
+interface Props {
+  projects: Project[];
+}
+
+const { projects } = Astro.props;
+---
+
+<div class="shelf" data-shelf>
+  {projects.map((project, index) => <ProjectFile project={project} index={index} open={index === 0} />)}
+</div>
+
+<style>
+  .shelf {
+    display: flex;
+    height: min(70vh, 660px);
+    padding-left: 28px; /* room for the first tab */
+  }
+
+  @media (max-width: 760px) {
+    .shelf {
+      flex-direction: column;
+      height: auto;
+      padding: 26px 0 0;
+    }
+  }
+</style>
+
+<script>
+  /** One file open at a time. Clicking a closed file opens it; an open one behaves as its links. */
+  function initShelf(shelf: HTMLElement): void {
+    const files = [...shelf.querySelectorAll<HTMLElement>('[data-file]')];
+
+    const open = (target: HTMLElement) => {
+      for (const file of files) {
+        const isTarget = file === target;
+        file.classList.toggle('is-open', isTarget);
+        file.querySelector('.tab')?.setAttribute('aria-expanded', String(isTarget));
+      }
+    };
+
+    shelf.addEventListener('click', (event) => {
+      const file = (event.target as Element).closest<HTMLElement>('[data-file]');
+      if (!file || file.classList.contains('is-open')) return;
+      event.preventDefault();
+      open(file);
+    });
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-shelf]').forEach(initShelf);
+</script>

@@ -1,0 +1,68 @@
+---
+import Chapter from '@/components/layout/Chapter.astro';
+import Footer from '@/components/layout/Footer.astro';
+import Button from '@/components/ui/Button.astro';
+import { site } from '@/data/site';
+import { externalLink } from '@/lib/links';
+---
+
+<Chapter id="contacto">
+  <div class="contact">
+    <p class="kicker">Contacto</p>
+    <h2 class="tall title"><span>Trabajemos</span><span>juntos.</span></h2>
+    <div class="links">
+      <Button data-copy={site.email} data-copy-done="Copiado">{site.email} — copiar</Button>
+      <Button href={site.links.github} {...externalLink}>GitHub ↗</Button>
+      <Button href={site.links.linkedin} {...externalLink}>LinkedIn ↗</Button>
+    </div>
+  </div>
+  <Footer />
+</Chapter>
+
+<style>
+  /* Clears the footer the persona lands on. */
+  .contact {
+    padding-bottom: calc(4vh + 56px);
+  }
+
+  .title {
+    font-size: clamp(3rem, 11vw, 12rem);
+  }
+
+  .title span {
+    display: block;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    max-width: 56vw;
+    margin-top: 5vh;
+  }
+
+  @media (max-width: 760px) {
+    .links {
+      max-width: 100%;
+      padding-right: 34vw;
+    }
+  }
+</style>
+
+<script>
+  const FEEDBACK_MS = 1600;
+
+  document.querySelectorAll<HTMLElement>('[data-copy]').forEach((button) => {
+    const label = button.textContent ?? '';
+
+    button.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(button.dataset.copy ?? '');
+        button.textContent = button.dataset.copyDone ?? label;
+        setTimeout(() => (button.textContent = label), FEEDBACK_MS);
+      } catch {
+        // Clipboard unavailable: the address stays selectable as text.
+      }
+    });
+  });
+</script>

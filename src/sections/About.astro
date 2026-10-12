@@ -1,0 +1,47 @@
+---
+import Chapter from '@/components/layout/Chapter.astro';
+import { education } from '@/data/site';
+---
+
+<Chapter id="sobre">
+  <div class="column">
+    <p class="kicker">Sobre mí</p>
+    <h2 class="tall statement">Todo proyecto tiene algo propio. Disfruto encontrarlo.</h2>
+    <p class="lede">
+      Soy programadora y psicóloga, pero lo que más me mueve es crear. Me gusta descubrir qué hace especial a un
+      proyecto, qué quiere transmitir y cómo llevar eso a una experiencia que se sienta propia.
+    </p>
+    <ol class="ruled timeline" aria-label="Formación y trabajo actual">
+      {
+        education.map((entry) => (
+          <li>
+            <span>{entry.when}</span>
+            <span>{entry.what}</span>
+            <span>{entry.where}</span>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</Chapter>
+
+<style>
+  .statement {
+    font-size: clamp(2.3rem, 5.8vw, 6.2rem);
+  }
+
+  .timeline li {
+    grid-template-columns: 12ch 1fr 1fr;
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (max-width: 760px) {
+    .timeline li {
+      grid-template-columns: 10ch 1fr;
+    }
+
+    .timeline li span:last-child {
+      grid-column: 2;
+    }
+  }
+</style>

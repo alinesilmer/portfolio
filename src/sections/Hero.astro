@@ -1,0 +1,59 @@
+---
+import Chapter from '@/components/layout/Chapter.astro';
+
+const lines = ['Construyo', 'interfaces', 'vivas.'];
+---
+
+<Chapter id="inicio">
+  <h1 class="headline">
+    {lines.map((line, index) => <span style={`--n:${index}`}>{line}</span>)}
+  </h1>
+  <p class="hint">Desliza para caer ↓</p>
+</Chapter>
+
+<style>
+  .headline {
+    font-family: var(--font-display);
+    font-size: var(--text-display);
+    font-weight: 900;
+    font-stretch: 125%;
+    line-height: 0.86;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+  }
+
+  .headline span {
+    display: block;
+    animation: rise 0.9s var(--ease-out) calc(var(--n) * 0.08s) both;
+  }
+
+  .hint {
+    position: absolute;
+    top: 80vh;
+    left: 50%;
+    font-size: clamp(0.95rem, 1.3vw, 1.2rem);
+    font-weight: 800;
+    font-stretch: 112%;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transform: translateX(-50%);
+  }
+
+  @media (max-width: 760px) {
+    .hint {
+      top: 86vh;
+    }
+  }
+
+  @keyframes rise {
+    from {
+      clip-path: inset(0 0 100% 0);
+      transform: translateY(0.35em);
+    }
+    to {
+      clip-path: inset(-10% 0 -10% 0);
+      transform: none;
+    }
+  }
+</style>

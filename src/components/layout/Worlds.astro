@@ -1,0 +1,22 @@
+---
+import { chapters } from '@/data/chapters';
+---
+
+<div class="worlds" aria-hidden="true">
+  {chapters.map((chapter) => <div class="world" data-world style={`--bg:var(--color-${chapter.bg})`} />)}
+</div>
+
+<style>
+  .world {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    /* Closed until the chapter controller opens it from the persona's position. */
+    clip-path: circle(0 at 50% 50%);
+    will-change: clip-path;
+  }
+
+  .world:first-child {
+    clip-path: none;
+  }
+</style>

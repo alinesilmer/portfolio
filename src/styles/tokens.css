@@ -1,0 +1,46 @@
+/* Design tokens. Every color, font, space, radius and motion value used by components comes from here. */
+:root {
+  /* color */
+  --color-ink: #121212;
+  --color-paper: #f3efe6;
+  --color-red: #d8402f;
+  --color-green: #1f5a44;
+  --color-blue: #263fae;
+  --color-pink: #dc96b6;
+  --color-orange: #e5792f;
+  --color-yellow: #f5c83a;
+
+  /* type */
+  --font-display: 'Archivo Variable', 'Arial Black', Impact, sans-serif;
+  --font-tall: 'Big Shoulders Display Variable', 'Arial Narrow', Impact, sans-serif;
+  --font-body: 'Archivo Variable', system-ui, Arial, sans-serif;
+  --text-label: 0.8rem;
+  --text-body: clamp(1.05rem, 1.4vw, 1.3rem);
+  --text-tall: clamp(2.8rem, 8.6vw, 9rem);
+  --text-display: clamp(2rem, 9.4vw, 10rem);
+
+  /* space and shape */
+  --gutter: clamp(16px, 4vw, 56px);
+  --border: 2px;
+  --radius-s: 10px;
+  --radius-m: 16px;
+  --radius-pill: 999px;
+  --column: min(56vw, 860px);
+
+  /* motion */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --dur-fast: 0.25s;
+  --dur-base: 0.4s;
+
+  /* layers */
+  --z-content: 2;
+  --z-persona: 10;
+  --z-nav: 15;
+  --z-progress: 20;
+  --z-splash: 50;
+
+  /* set by the chapter controller as the active chapter changes */
+  --nav-color: var(--color-paper);
+
+  color-scheme: dark;
+}

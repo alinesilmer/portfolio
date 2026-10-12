@@ -1,0 +1,52 @@
+---
+import Chapter from '@/components/layout/Chapter.astro';
+import ProjectShelf from '@/components/projects/ProjectShelf.astro';
+import { projects } from '@/data/projects';
+---
+
+<Chapter id="proyectos">
+  <div class="projects">
+    <p class="kicker">Proyectos · elige una pestaña</p>
+    <div class="layout">
+      <h2 class="tall title">Proyectos</h2>
+      <ProjectShelf projects={projects} />
+    </div>
+  </div>
+</Chapter>
+
+<style>
+  /* Leaves a lane on the right for the persona. */
+  .projects {
+    padding-right: 18vw;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: clamp(20px, 3vw, 48px);
+    align-items: end;
+  }
+
+  .title {
+    font-size: clamp(3rem, 12.5vh, 8rem);
+    line-height: 0.8;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+
+  @media (max-width: 760px) {
+    .projects {
+      padding-right: 0;
+    }
+
+    .layout {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .title {
+      font-size: clamp(2.8rem, 14vw, 5rem);
+      writing-mode: horizontal-tb;
+      transform: none;
+    }
+  }
+</style>

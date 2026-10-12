@@ -1,0 +1,58 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+/** Renders a link when `href` is given, otherwise a button. */
+interface Props extends HTMLAttributes<'a'> {
+  variant?: 'outline' | 'solid';
+}
+
+const { variant = 'outline', class: className, href, ...rest } = Astro.props;
+---
+
+{
+  href ? (
+    <a class:list={['button', `button--${variant}`, className]} href={href} {...rest}>
+      <slot />
+    </a>
+  ) : (
+    <button class:list={['button', `button--${variant}`, className]} type="button" {...(rest as HTMLAttributes<'button'>)}>
+      <slot />
+    </button>
+  )
+}
+
+<style>
+  /* Colors follow the surrounding chapter through --fg / --bg. */
+  .button {
+    display: inline-block;
+    padding: 13px 20px;
+    border: var(--border) solid currentColor;
+    border-radius: var(--radius-pill);
+    background: none;
+    color: inherit;
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    text-transform: uppercase;
+    cursor: pointer;
+    user-select: text;
+    transition:
+      background var(--dur-fast),
+      color var(--dur-fast);
+  }
+
+  .button--outline:hover,
+  .button--outline:focus-visible,
+  .button--solid {
+    background: var(--fg);
+    color: var(--bg);
+  }
+
+  .button--solid:hover,
+  .button--solid:focus-visible {
+    background: transparent;
+    color: var(--fg);
+  }
+</style>

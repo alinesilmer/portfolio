@@ -1,0 +1,41 @@
+---
+import { site } from '@/data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <span>© {year} {site.shortName}</span>
+  <a href="#inicio">Volver arriba ↑</a>
+</footer>
+
+<style>
+  /* The rule along its top edge is the ground the persona lands on. */
+  .footer {
+    position: absolute;
+    right: var(--gutter);
+    bottom: 0;
+    left: var(--gutter);
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: 16px;
+    height: 18vh;
+    padding-top: 14px;
+    border-top: var(--border) solid currentColor;
+    font-size: var(--text-label);
+    font-weight: 600;
+  }
+
+  a {
+    border-bottom: var(--border) solid currentColor;
+    text-decoration: none;
+  }
+
+  @media (max-width: 760px) {
+    .footer {
+      flex-wrap: wrap;
+      padding-right: 34vw;
+    }
+  }
+</style>

@@ -1,0 +1,72 @@
+---
+import Chapter from '@/components/layout/Chapter.astro';
+import CvDialog from '@/components/overlays/CvDialog.astro';
+import Button from '@/components/ui/Button.astro';
+import { skills } from '@/data/site';
+
+const CV_DIALOG = 'cv';
+---
+
+<Chapter id="tecnico">
+  <div class="column column--end">
+    <p class="kicker">Lo técnico</p>
+    <h2 class="tall">Revisión de equipo</h2>
+    <p class="lede">
+      Disfruto trabajar cerca de las ideas: probar, ajustar, simplificar y encontrar esa versión que no solo funciona,
+      sino que se siente correcta. Soy curiosa, autodidacta y muy detallista.
+    </p>
+    <ul class="ruled gear">
+      {
+        skills.map((skill) => (
+          <li>
+            <b>{skill.area}</b>
+            <span>{skill.items.join(' · ')}</span>
+            <i>Listo</i>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="cv">
+      <Button variant="solid" data-dialog-open={CV_DIALOG} aria-haspopup="dialog">Ver CV</Button>
+    </p>
+  </div>
+</Chapter>
+
+<CvDialog id={CV_DIALOG} />
+
+<style>
+  .gear li {
+    grid-template-columns: auto 1fr auto;
+  }
+
+  .gear b {
+    font-family: var(--font-tall);
+    font-size: clamp(1.6rem, 3.6vw, 3.4rem);
+    font-weight: 900;
+    line-height: 0.9;
+    text-transform: uppercase;
+  }
+
+  .gear i {
+    font-size: 0.74rem;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .cv {
+    margin-top: 4vh;
+  }
+
+  @media (max-width: 760px) {
+    .gear li {
+      grid-template-columns: 1fr auto;
+    }
+
+    .gear li span {
+      grid-row: 2;
+      grid-column: 1 / -1;
+    }
+  }
+</style>

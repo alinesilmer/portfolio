@@ -1,0 +1,105 @@
+---
+import { Image } from 'astro:assets';
+
+import cv from '@/assets/cv.png';
+import Button from '@/components/ui/Button.astro';
+import { site } from '@/data/site';
+
+interface Props {
+  /** Any element with `data-dialog-open="<id>"` opens this dialog. */
+  id: string;
+}
+
+const { id } = Astro.props;
+const titleId = `${id}-title`;
+---
+
+<dialog id={id} class="dialog" data-dialog aria-labelledby={titleId}>
+  <div class="bar">
+    <p id={titleId}>¿Querés descargar mi CV?</p>
+    <div class="actions">
+      <Button variant="solid" href={site.cv.href} download={site.cv.filename}>Descargar ↓</Button>
+      <Button data-dialog-close>Cerrar</Button>
+    </div>
+  </div>
+  <Image
+    src={cv}
+    alt={`CV de ${site.name}: ${site.role}, con experiencia, formación y herramientas`}
+    widths={[720, 1491]}
+    sizes="(max-width: 1072px) 100vw, 1040px"
+    loading="lazy"
+  />
+</dialog>
+
+<style>
+  .dialog {
+    width: min(1040px, calc(100vw - 32px));
+    max-height: calc(100vh - 48px);
+    padding: 0;
+    overflow: auto;
+    border: 0;
+    border-radius: var(--radius-m);
+    background: var(--color-paper);
+    color: var(--color-ink);
+  }
+
+  .dialog::backdrop {
+    background: color-mix(in srgb, var(--color-ink) 78%, transparent);
+  }
+
+  .dialog[open] {
+    animation: rise 0.35s var(--ease-out);
+  }
+
+  .bar {
+    --fg: var(--color-ink);
+    --bg: var(--color-paper);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px 16px;
+    padding: 12px 16px;
+    background: var(--color-paper);
+  }
+
+  .bar p {
+    font-weight: 700;
+  }
+
+  .actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  .dialog :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+  }
+</style>
+
+<script>
+  /** Native <dialog>: Esc and focus handling come from the browser; this adds open, close and backdrop click. */
+  document.querySelectorAll<HTMLDialogElement>('[data-dialog]').forEach((dialog) => {
+    document
+      .querySelectorAll(`[data-dialog-open="${dialog.id}"]`)
+      .forEach((opener) => opener.addEventListener('click', () => dialog.showModal()));
+
+    dialog.querySelectorAll('[data-dialog-close]').forEach((closer) => closer.addEventListener('click', () => dialog.close()));
+
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+  });
+</script>

@@ -1,0 +1,38 @@
+---
+import { getChapter, type ChapterId } from '@/data/chapters';
+
+interface Props {
+  id: ChapterId;
+}
+
+const { id } = Astro.props;
+const chapter = getChapter(id);
+---
+
+<section
+  id={chapter.id}
+  class="chapter"
+  data-chapter
+  data-fg={chapter.fg}
+  data-persona={JSON.stringify(chapter.persona)}
+  style={`--bg:var(--color-${chapter.bg});--fg:var(--color-${chapter.fg})`}
+>
+  <slot />
+</section>
+
+<style>
+  /* Transparent on purpose: the color comes from the fixed world layer behind. */
+  .chapter {
+    position: relative;
+    min-height: 100vh;
+    padding: 20vh var(--gutter) 14vh;
+    color: var(--fg);
+  }
+
+  @media (max-width: 760px) {
+    .chapter {
+      /* Leaves the band the persona rides in on phones. */
+      padding-top: 26vh;
+    }
+  }
+</style>

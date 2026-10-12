@@ -1,0 +1,144 @@
+/* Reset, document defaults and the few utilities shared by more than one section. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: clip;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  overflow-x: clip;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+h1,
+h2,
+h3,
+p,
+dl,
+dd,
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  list-style: none;
+}
+
+a {
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 4px;
+}
+
+.skip-link {
+  position: fixed;
+  left: var(--gutter);
+  top: 8px;
+  z-index: calc(var(--z-splash) + 1);
+  padding: 10px 16px;
+  border-radius: var(--radius-pill);
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-weight: 700;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+/* type utilities */
+.kicker {
+  margin-bottom: 2.4vh;
+  font-size: var(--text-label);
+  font-weight: 800;
+  font-stretch: 112%;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.tall {
+  font-family: var(--font-tall);
+  font-size: var(--text-tall);
+  font-weight: 900;
+  line-height: 0.84;
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.lede {
+  max-width: 46ch;
+  margin-top: 4vh;
+  font-size: var(--text-body);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* layout utilities */
+.column {
+  width: var(--column);
+  max-width: 100%;
+}
+
+.column--end {
+  margin-left: auto;
+}
+
+/* ruled rows: sections set their own grid-template-columns */
+.ruled {
+  margin-top: 5vh;
+}
+
+.ruled > li {
+  display: grid;
+  gap: 8px 20px;
+  align-items: baseline;
+  padding: 12px 0;
+  border-top: var(--border) solid currentColor;
+  font-weight: 600;
+}
+
+.ruled > li:last-child {
+  border-bottom: var(--border) solid currentColor;
+}
+
+@media (max-width: 760px) {
+  .column {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
