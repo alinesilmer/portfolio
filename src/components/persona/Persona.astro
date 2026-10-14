@@ -65,11 +65,11 @@ const start = chapters[0].persona;
   }
 
   .float {
-    animation: float 5s ease-in-out infinite;
+    animation: persona-float 5s ease-in-out infinite;
   }
 
   .persona:global(.is-landed) .float {
-    animation: sway 2.6s ease-in-out infinite;
+    animation: persona-sway 2.6s ease-in-out infinite;
     transform-origin: 50% 97%;
   }
 
@@ -86,7 +86,7 @@ const start = chapters[0].persona;
     opacity: 1;
   }
 
-  @keyframes float {
+  @keyframes persona-float {
     0%,
     100% {
       transform: translateY(-1.5%) rotate(-1.2deg);
@@ -96,7 +96,7 @@ const start = chapters[0].persona;
     }
   }
 
-  @keyframes sway {
+  @keyframes persona-sway {
     0%,
     100% {
       transform: rotate(-1.4deg);

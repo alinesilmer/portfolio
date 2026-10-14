@@ -1,15 +1,30 @@
 ---
 import { chapters } from '@/data/chapters';
+
+/** Every world carries the same three currents; their tones are derived from its own color. */
+const currents = ['light', 'deep', 'shift'] as const;
 ---
 
 <div class="worlds" aria-hidden="true">
-  {chapters.map((chapter) => <div class="world" data-world style={`--bg:var(--color-${chapter.bg})`} />)}
+  {
+    chapters.map((chapter, index) => (
+      <div class="world" data-world data-live={index < 2 ? '' : undefined} style={`--bg:var(--color-${chapter.bg})`}>
+        <div class="currents">
+          {currents.map((tone) => (
+            <i class={`current current--${tone}`} />
+          ))}
+        </div>
+      </div>
+    ))
+  }
+  <div class="grain"></div>
 </div>
 
 <style>
   .world {
     position: fixed;
     inset: 0;
+    overflow: hidden;
     background: var(--bg);
     /* Closed until the chapter controller opens it from the persona's position. */
     clip-path: circle(0 at 50% 50%);
@@ -18,5 +33,100 @@ import { chapters } from '@/data/chapters';
 
   .world:first-child {
     clip-path: none;
+  }
+
+  /*
+   * Living color: soft fields in lighter, deeper and hue-shifted tones of the world's own
+   * color drift slowly behind the content. They lean toward the pointer (--px / --py) and
+   * swell while the page falls fast (--fall); both are set by scripts on the root.
+   */
+  .currents {
+    position: absolute;
+    inset: -12vmax;
+    transform: translate(calc(var(--px, 0) * -2.5vmax), calc(var(--py, 0) * -2.5vmax));
+    scale: calc(1 + var(--fall, 0) * 0.08);
+    transition:
+      transform 1.6s var(--ease-out),
+      scale 0.6s var(--ease-out);
+  }
+
+  /* Only the active world and its neighbours animate; the rest are covered anyway. */
+  .world:not([data-live]) .currents {
+    display: none;
+  }
+
+  .current {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, var(--tone), transparent);
+    animation: var(--path) var(--dur) ease-in-out infinite alternate;
+  }
+
+  .current--light {
+    --tone: color-mix(in oklch, var(--bg), white 24%);
+    --path: world-drift-a;
+    --dur: 26s;
+    top: 0;
+    left: 30%;
+    width: 75vmax;
+    height: 55vmax;
+  }
+
+  .current--deep {
+    --tone: color-mix(in oklch, var(--bg), black 32%);
+    --path: world-drift-b;
+    --dur: 32s;
+    bottom: 0;
+    left: 0;
+    width: 70vmax;
+    height: 60vmax;
+  }
+
+  .current--shift {
+    --tone: oklch(from var(--bg) calc(l + 0.05) calc(c + 0.03) calc(h + 28));
+    --path: world-drift-c;
+    --dur: 38s;
+    right: 0;
+    bottom: 10%;
+    width: 60vmax;
+    height: 48vmax;
+    opacity: 0.85;
+  }
+
+  @keyframes world-drift-a {
+    from {
+      transform: translate(-8vmax, -4vmax) rotate(-12deg) scale(1);
+    }
+    to {
+      transform: translate(10vmax, 8vmax) rotate(18deg) scale(1.15);
+    }
+  }
+
+  @keyframes world-drift-b {
+    from {
+      transform: translate(6vmax, 6vmax) rotate(10deg) scale(1.1);
+    }
+    to {
+      transform: translate(-6vmax, -10vmax) rotate(-16deg) scale(0.92);
+    }
+  }
+
+  @keyframes world-drift-c {
+    from {
+      transform: translate(4vmax, -6vmax) rotate(20deg) scale(0.9);
+    }
+    to {
+      transform: translate(-12vmax, 6vmax) rotate(-10deg) scale(1.12);
+    }
+  }
+
+  /* Fine print-like texture over the color so the flat fields read as material. */
+  .grain {
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 1.1 -0.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+    opacity: 0.35;
+    pointer-events: none;
   }
 </style>

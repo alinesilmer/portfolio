@@ -1,14 +1,18 @@
 ---
 import Chapter from '@/components/layout/Chapter.astro';
+import { site } from '@/data/site';
+import { getLang } from '@/i18n';
+import { useTranslations } from '@/i18n/ui';
 
-const lines = ['Construyo', 'interfaces', 'vivas.'];
+const { hero } = useTranslations(getLang(Astro.url));
 ---
 
 <Chapter id="inicio">
   <h1 class="headline">
-    {lines.map((line, index) => <span style={`--n:${index}`}>{line}</span>)}
+    <span class="tagline">{site.name} · {hero.tagline}</span>
+    {hero.lines.map((line, index) => <span style={`--n:${index}`}>{line}</span>)}
   </h1>
-  <p class="hint">Desliza para caer ↓</p>
+  <p class="hint">{hero.hint}</p>
 </Chapter>
 
 <style>
@@ -24,7 +28,19 @@ const lines = ['Construyo', 'interfaces', 'vivas.'];
 
   .headline span {
     display: block;
-    animation: rise 0.9s var(--ease-out) calc(var(--n) * 0.08s) both;
+    animation: hero-rise 0.9s var(--ease-out) calc(var(--n) * 0.08s) both;
+  }
+
+  /* Says who and what inside the heading itself, for readers and search engines alike. */
+  .headline .tagline {
+    margin-bottom: 2.4vh;
+    font-family: var(--font-body);
+    font-size: var(--text-label);
+    font-weight: 800;
+    font-stretch: 112%;
+    line-height: 1.2;
+    letter-spacing: 0.1em;
+    animation: hero-fade 0.6s ease 0.4s both;
   }
 
   .hint {
@@ -46,7 +62,13 @@ const lines = ['Construyo', 'interfaces', 'vivas.'];
     }
   }
 
-  @keyframes rise {
+  @keyframes hero-fade {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @keyframes hero-rise {
     from {
       clip-path: inset(0 0 100% 0);
       transform: translateY(0.35em);

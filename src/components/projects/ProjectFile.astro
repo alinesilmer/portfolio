@@ -2,6 +2,8 @@
 import { Image } from 'astro:assets';
 
 import type { Project } from '@/data/projects';
+import { getLang } from '@/i18n';
+import { useTranslations } from '@/i18n/ui';
 import { externalLink } from '@/lib/links';
 
 interface Props {
@@ -14,11 +16,13 @@ interface Props {
 const TAB_SLOTS = 5;
 
 const { project, index, open = false } = Astro.props;
+const lang = getLang(Astro.url);
+const t = useTranslations(lang).projects;
 const previewId = `proyecto-${index + 1}`;
 const facts = [
-  ['Rol', project.role],
-  ['Stack', project.stack],
-  ['Año', project.year],
+  [t.role, project.role?.[lang]],
+  [t.stack, project.stack],
+  [t.year, project.year],
 ].filter((fact): fact is [string, string] => Boolean(fact[1]));
 ---
 
@@ -30,16 +34,16 @@ const facts = [
   <div class="preview" id={previewId}>
     <Image
       src={project.image}
-      alt={`Vista previa de ${project.name}`}
+      alt={t.preview(project.name)}
       widths={[440, 880]}
       sizes="(max-width: 760px) 100vw, 45vw"
       loading="lazy"
     />
-    <a class="portal" href={project.url} aria-label={`Abrir ${project.name} en una pestaña nueva`} {...externalLink}></a>
+    <a class="portal" href={project.url} aria-label={t.open(project.name)} {...externalLink}></a>
 
     <div class="detail">
       <h3>{project.name}</h3>
-      <p>{project.description}</p>
+      <p>{project.description[lang]}</p>
       {
         facts.length > 0 && (
           <dl>
@@ -52,7 +56,7 @@ const facts = [
           </dl>
         )
       }
-      <a href={project.url} {...externalLink}>Visitar sitio ↗</a>
+      <a href={project.url} {...externalLink}>{t.visit}</a>
     </div>
   </div>
 </article>

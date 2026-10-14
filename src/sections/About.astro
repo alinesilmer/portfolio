@@ -1,22 +1,24 @@
 ---
 import Chapter from '@/components/layout/Chapter.astro';
 import { education } from '@/data/site';
+import { getLang } from '@/i18n';
+import { useTranslations } from '@/i18n/ui';
+
+const lang = getLang(Astro.url);
+const { about } = useTranslations(lang);
 ---
 
 <Chapter id="sobre">
   <div class="column">
-    <p class="kicker">Sobre mí</p>
-    <h2 class="tall statement">Todo proyecto tiene algo propio. Disfruto encontrarlo.</h2>
-    <p class="lede">
-      Soy programadora y psicóloga, pero lo que más me mueve es crear. Me gusta descubrir qué hace especial a un
-      proyecto, qué quiere transmitir y cómo llevar eso a una experiencia que se sienta propia.
-    </p>
-    <ol class="ruled timeline" aria-label="Formación y trabajo actual">
+    <p class="kicker">{about.kicker}</p>
+    <h2 class="tall statement">{about.statement}</h2>
+    <p class="lede">{about.lede}</p>
+    <ol class="ruled timeline" aria-label={about.timeline}>
       {
         education.map((entry) => (
           <li>
-            <span>{entry.when}</span>
-            <span>{entry.what}</span>
+            <span>{entry.when[lang]}</span>
+            <span>{entry.what[lang]}</span>
             <span>{entry.where}</span>
           </li>
         ))

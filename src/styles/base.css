@@ -142,3 +142,12 @@ img {
     transition: none !important;
   }
 }
+
+/* Big headings stretch a little while the page falls fast (--fall is set by the scroll loop). */
+.headline,
+.tall:not(.title),
+#contacto .title {
+  transform: skewY(calc(var(--fall, 0) * -3deg)) scaleY(calc(1 + var(--fall, 0) * 0.06));
+  transform-origin: 0 0;
+  transition: transform 0.5s var(--ease-out);
+}

@@ -1,18 +1,24 @@
 ---
 import { site } from '@/data/site';
+import { getLang, homePath, languages, langs } from '@/i18n';
+import { useTranslations } from '@/i18n/ui';
+
+const lang = getLang(Astro.url);
+const t = useTranslations(lang);
+const other = langs.find((code) => code !== lang) ?? lang;
 
 const links = [
-  { href: '#sobre', label: 'Sobre mí' },
-  { href: '#proyectos', label: 'Proyectos' },
-  { href: '#contacto', label: 'Contacto' },
+  { href: '#sobre', label: t.nav.about },
+  { href: '#proyectos', label: t.nav.projects },
+  { href: '#contacto', label: t.nav.contact },
 ];
 ---
 
 <div class="progress" data-scroll-progress aria-hidden="true"></div>
 
 <header class="header">
-  <a href="#inicio" aria-label="Volver al inicio">{site.shortName}</a>
-  <nav aria-label="Principal">
+  <a href="#inicio" aria-label={t.nav.home}>{site.shortName}</a>
+  <nav aria-label={t.nav.label}>
     <ul>
       {
         links.map((link) => (
@@ -21,10 +27,19 @@ const links = [
           </li>
         ))
       }
+      <li>
+        <a
+          class="lang"
+          href={homePath(other)}
+          hreflang={languages[other].hreflang}
+          lang={other}
+          aria-label={t.switchTo}
+          title={languages[other].label}>{languages[other].short}</a
+        >
+      </li>
     </ul>
   </nav>
 </header>
-
 <style>
   .progress {
     position: fixed;
@@ -57,6 +72,7 @@ const links = [
 
   ul {
     display: flex;
+    align-items: center;
     gap: clamp(12px, 3vw, 36px);
   }
 
@@ -74,10 +90,51 @@ const links = [
       letter-spacing: 0.03em;
       white-space: nowrap;
     }
+
+    ul {
+      gap: 9px;
+    }
+
+    .lang {
+      padding: 4px 6px;
+    }
   }
 
-  a:hover,
-  a:focus-visible {
+  /* Small phones: the full set of links plus the language switch no longer fits. */
+  @media (max-width: 400px) {
+    .header {
+      font-size: 0.64rem;
+      letter-spacing: 0;
+    }
+  }
+
+  /* The name already fills the hero; the menu needs the room. */
+  @media (max-width: 350px) {
+    .header > a {
+      display: none;
+    }
+
+    .header {
+      justify-content: flex-end;
+    }
+  }
+
+  .lang {
+    padding: 6px 10px;
+    border: var(--border) solid currentColor;
+    border-radius: var(--radius-pill);
+    background: none;
+    line-height: 1;
+  }
+
+  .lang:hover,
+  .lang:focus-visible {
+    background: var(--nav-color);
+    color: var(--color-ink);
+  }
+
+  a:not(.lang):hover,
+  a:not(.lang):focus-visible {
     background-size: 100% var(--border);
   }
 </style>

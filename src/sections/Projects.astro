@@ -2,13 +2,17 @@
 import Chapter from '@/components/layout/Chapter.astro';
 import ProjectShelf from '@/components/projects/ProjectShelf.astro';
 import { projects } from '@/data/projects';
+import { getLang } from '@/i18n';
+import { useTranslations } from '@/i18n/ui';
+
+const t = useTranslations(getLang(Astro.url));
 ---
 
 <Chapter id="proyectos">
   <div class="projects">
-    <p class="kicker">Proyectos · elige una pestaña</p>
+    <p class="kicker">{t.projects.kicker}</p>
     <div class="layout">
-      <h2 class="tall title">Proyectos</h2>
+      <h2 class="tall title">{t.projects.title}</h2>
       <ProjectShelf projects={projects} />
     </div>
   </div>

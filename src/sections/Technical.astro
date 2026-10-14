@@ -3,31 +3,32 @@ import Chapter from '@/components/layout/Chapter.astro';
 import CvDialog from '@/components/overlays/CvDialog.astro';
 import Button from '@/components/ui/Button.astro';
 import { skills } from '@/data/site';
+import { getLang } from '@/i18n';
+import { useTranslations } from '@/i18n/ui';
 
 const CV_DIALOG = 'cv';
+const lang = getLang(Astro.url);
+const { technical } = useTranslations(lang);
 ---
 
 <Chapter id="tecnico">
   <div class="column column--end">
-    <p class="kicker">Lo técnico</p>
-    <h2 class="tall">Revisión de equipo</h2>
-    <p class="lede">
-      Disfruto trabajar cerca de las ideas: probar, ajustar, simplificar y encontrar esa versión que no solo funciona,
-      sino que se siente correcta. Soy curiosa, autodidacta y muy detallista.
-    </p>
+    <p class="kicker">{technical.kicker}</p>
+    <h2 class="tall">{technical.title}</h2>
+    <p class="lede">{technical.lede}</p>
     <ul class="ruled gear">
       {
         skills.map((skill) => (
           <li>
-            <b>{skill.area}</b>
-            <span>{skill.items.join(' · ')}</span>
-            <i>Listo</i>
+            <b>{skill.area[lang]}</b>
+            <span>{skill.items[lang].join(' · ')}</span>
+            <i>{technical.ready}</i>
           </li>
         ))
       }
     </ul>
     <p class="cv">
-      <Button variant="solid" data-dialog-open={CV_DIALOG} aria-haspopup="dialog">Ver CV</Button>
+      <Button variant="solid" data-dialog-open={CV_DIALOG} aria-haspopup="dialog">{technical.cv}</Button>
     </p>
   </div>
 </Chapter>

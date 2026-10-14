@@ -3,15 +3,19 @@ import Chapter from '@/components/layout/Chapter.astro';
 import Footer from '@/components/layout/Footer.astro';
 import Button from '@/components/ui/Button.astro';
 import { site } from '@/data/site';
+import { getLang } from '@/i18n';
+import { useTranslations } from '@/i18n/ui';
 import { externalLink } from '@/lib/links';
+
+const { contact } = useTranslations(getLang(Astro.url));
 ---
 
 <Chapter id="contacto">
   <div class="contact">
-    <p class="kicker">Contacto</p>
-    <h2 class="tall title"><span>Trabajemos</span><span>juntos.</span></h2>
+    <p class="kicker">{contact.kicker}</p>
+    <h2 class="tall title">{contact.title.map((line) => <span>{line}</span>)}</h2>
     <div class="links">
-      <Button data-copy={site.email} data-copy-done="Copiado">{site.email} — copiar</Button>
+      <Button data-copy={site.email} data-copy-done={contact.copied}>{site.email} — {contact.copy}</Button>
       <Button href={site.links.github} {...externalLink}>GitHub ↗</Button>
       <Button href={site.links.linkedin} {...externalLink}>LinkedIn ↗</Button>
     </div>

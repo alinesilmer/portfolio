@@ -4,8 +4,8 @@ import { onScrollFrame } from './scroll-frame';
 import { createWorlds } from './worlds';
 
 /**
- * Wires the scroll loop to the three things that follow it:
- * the persona, the color worlds that burst out of her, and the nav/progress color.
+ * Wires the scroll loop to the things that follow it: the persona, the color worlds
+ * that burst out of her, the nav/progress color and the fall speed (--fall).
  */
 function initChapters(): void {
   const root = document.documentElement;
@@ -29,7 +29,12 @@ function initChapters(): void {
       if (now !== active) {
         active = now;
         root.style.setProperty('--nav-color', `var(--color-${sections[now]?.dataset.fg ?? 'paper'})`);
+        // Only the active world and its neighbours keep their living color running.
+        layers.forEach((layer, index) => layer.toggleAttribute('data-live', Math.abs(index - now) <= 1));
       }
+
+      // How hard the page is falling: background currents swell and headings stretch with it.
+      root.style.setProperty('--fall', frame.velocity.toFixed(3));
 
       if (progress) {
         const max = root.scrollHeight - window.innerHeight;

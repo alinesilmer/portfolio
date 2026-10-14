@@ -33,7 +33,7 @@ const start = chapters[0].persona;
     background: var(--color-ink);
     color: var(--color-paper);
     cursor: pointer;
-    animation: splash-out 0.9s var(--ease-out) 3.9s forwards;
+    animation: splash-close 0.9s var(--ease-out) 3.9s forwards;
   }
 
   :global(.no-splash) .splash {
@@ -51,7 +51,7 @@ const start = chapters[0].persona;
     background: var(--bg);
     transform: scale(0);
     /* Each color eases in slowly and overlaps the next, so the sequence reads as one wave. */
-    animation: burst 1.1s cubic-bezier(0.4, 0, 0.2, 1) calc(0.9s + var(--n) * 0.45s) forwards;
+    animation: splash-burst 1.1s cubic-bezier(0.4, 0, 0.2, 1) calc(0.9s + var(--n) * 0.45s) forwards;
   }
 
   .name {
@@ -75,7 +75,7 @@ const start = chapters[0].persona;
   b span {
     display: inline-block;
     transform: translateY(110%);
-    animation: letter 0.7s var(--ease-out) calc(0.1s + var(--n) * 0.07s) forwards;
+    animation: splash-letter 0.7s var(--ease-out) calc(0.1s + var(--n) * 0.07s) forwards;
   }
 
   small {
@@ -87,28 +87,28 @@ const start = chapters[0].persona;
     letter-spacing: 0.3em;
     text-transform: uppercase;
     opacity: 0;
-    animation: fade 0.5s ease 0.7s forwards;
+    animation: splash-fade 0.5s ease 0.7s forwards;
   }
 
-  @keyframes letter {
+  @keyframes splash-letter {
     to {
       transform: none;
     }
   }
 
-  @keyframes fade {
+  @keyframes splash-fade {
     to {
       opacity: 1;
     }
   }
 
-  @keyframes burst {
+  @keyframes splash-burst {
     to {
       transform: scale(1);
     }
   }
 
-  @keyframes splash-out {
+  @keyframes splash-close {
     from {
       clip-path: circle(150vmax at var(--ox) var(--oy));
     }
@@ -146,7 +146,7 @@ const start = chapters[0].persona;
     };
 
     splash.addEventListener('animationend', (event) => {
-      if (event.animationName.startsWith('splash-out')) dismiss();
+      if (event.animationName.startsWith('splash-close')) dismiss();
     });
     splash.addEventListener('click', dismiss);
   }

@@ -4,6 +4,8 @@ import { Image } from 'astro:assets';
 import cv from '@/assets/cv.png';
 import Button from '@/components/ui/Button.astro';
 import { site } from '@/data/site';
+import { getLang } from '@/i18n';
+import { useTranslations } from '@/i18n/ui';
 
 interface Props {
   /** Any element with `data-dialog-open="<id>"` opens this dialog. */
@@ -12,19 +14,21 @@ interface Props {
 
 const { id } = Astro.props;
 const titleId = `${id}-title`;
+const lang = getLang(Astro.url);
+const t = useTranslations(lang).cv;
 ---
 
 <dialog id={id} class="dialog" data-dialog aria-labelledby={titleId}>
   <div class="bar">
-    <p id={titleId}>¿Querés descargar mi CV?</p>
+    <p id={titleId}>{t.question}</p>
     <div class="actions">
-      <Button variant="solid" href={site.cv.href} download={site.cv.filename}>Descargar ↓</Button>
-      <Button data-dialog-close>Cerrar</Button>
+      <Button variant="solid" href={site.cv.href} download={site.cv.filename}>{t.download}</Button>
+      <Button data-dialog-close>{t.close}</Button>
     </div>
   </div>
   <Image
     src={cv}
-    alt={`CV de ${site.name}: ${site.role}, con experiencia, formación y herramientas`}
+    alt={t.alt(site.name, site.role[lang])}
     widths={[720, 1491]}
     sizes="(max-width: 1072px) 100vw, 1040px"
     loading="lazy"
@@ -48,7 +52,7 @@ const titleId = `${id}-title`;
   }
 
   .dialog[open] {
-    animation: rise 0.35s var(--ease-out);
+    animation: cvdialog-rise 0.35s var(--ease-out);
   }
 
   .bar {
@@ -81,7 +85,7 @@ const titleId = `${id}-title`;
     height: auto;
   }
 
-  @keyframes rise {
+  @keyframes cvdialog-rise {
     from {
       opacity: 0;
       transform: translateY(40px);

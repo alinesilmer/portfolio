@@ -1,12 +1,15 @@
 ---
 import { site } from '@/data/site';
+import { getLang } from '@/i18n';
+import { useTranslations } from '@/i18n/ui';
 
+const t = useTranslations(getLang(Astro.url));
 const year = new Date().getFullYear();
 ---
 
 <footer class="footer">
   <span>© {year} {site.shortName}</span>
-  <a href="#inicio">Volver arriba ↑</a>
+  <a href="#inicio">{t.footer.top}</a>
 </footer>
 
 <style>
